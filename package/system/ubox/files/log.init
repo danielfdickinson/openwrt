@@ -53,7 +53,9 @@ start_service_file()
 	[ -z "${log_file}" ] && return
 
 	[ "$_BOOT" = "1" ] &&
-		[ "$(procd_get_mountpoints "${log_file}")" ] && return 0
+		[ "$(procd_get_mountpoints "${log_file}")" ] &&
+		! grep -q ".* $(procd_get_mountpoints "${log_file}") " /proc/mounts &&
+		return 0
 
 	mkdir -p "$(dirname "${log_file}")"
 
